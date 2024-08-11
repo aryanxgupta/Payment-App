@@ -3,14 +3,26 @@ import { BottomWarning } from "./BottomWarning";
 import { Button } from "./Button";
 import { Heading } from "./Heading";
 import { InputBox } from "./InputBox";
+import { ErrorWarning } from "./ErrorWarning";
+import { SuccessWarning } from "./SuccessWarning"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export function SendMoneyPage(){
+    const [successMsg, setSuccessMsg] = useState(false)
+    const [errMsg, setErrMsg] = useState("")
+    const [error, setError] = useState(false)
     const[reciever, setReciever] = useState("")
     const[id, setId] = useState("")
     const[amount, setAmount] = useState(0)
     const navigate = useNavigate()
+
+    async function showSuccessWarning() {
+        setSuccessMsg(true);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setSuccessMsg(false);
+    }
+    
 
     useEffect(()=>{
         setReciever(localStorage.getItem('full-name'))
@@ -33,19 +45,33 @@ export function SendMoneyPage(){
                     setAmount(parseInt(e.target.value))
                 }}/>
                 <Button label="Send" onClick={async()=>{
-                    const response = await axios.post('http://localhost:3000/api/v1/account/transfer',{
-                        to: id, 
-                        amount: amount
-                    }, {
-                        headers:{
-                            Authorization: 'Bearer ' + localStorage.getItem('token')
-                        }
-                    })
-                    navigate('/dashboard')
+                    try{
+                        const response = await axios.post('http://localhost:3000/api/v1/account/transfer',{
+                            to: id, 
+                            amount: amount
+                        }, {
+                            headers:{
+                                Authorization: 'Bearer ' + localStorage.getItem('token')
+                            }
+                        })
+                        
+                        await showSuccessWarning()
+                        navigate('/dashboard')      
+                    }catch(err){
+                        setError(true)
+                        setErrMsg(err.response.data.message)
+                        setTimeout(()=> setError(false), 2000)
+                    }
                     
                 }} />
                 <BottomWarning label="Cancel Transaction?" text="Cancel" to="/dashboard" />
             </div>
+            {successMsg && <div className='absolute top-0 left-1/2 translate-x-[-50%]'>
+                <SuccessWarning message="Transaction completed successfully" />
+            </div>}
+            {error && <div className='absolute top-0 left-1/2 translate-x-[-50%]'>
+                <ErrorWarning message={errMsg} />
+            </div>}
         </div>
     )
 }
