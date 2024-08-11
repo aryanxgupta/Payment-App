@@ -1,21 +1,22 @@
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Signup } from './Pages/Signup'
 import { Signin } from './Pages/Signin'
 import { Dashboard } from './Pages/Dashboard'
-
+import { SendMoney } from './Pages/SendMoney'
 
 function App() {
   return (
     <div>
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/signin' element={<Signin />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/SendMoney' element={<SendMoney />} />
           <Route path="/" element={<Navigate to="/signin" />} />
           <Route path="*" element={<Navigate to="/signin" />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </div>
   )
 }
