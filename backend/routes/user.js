@@ -51,18 +51,18 @@ router.get('/bulk', verifyJWT, async function(req, res){
             });
         }
         const filteredUsers = await User.find({
-            $or:[{
-                firstName: {
-                    $regex: filter, 
-                    $options: 'i'
+            $and: [
+                {
+                    $or: [
+                        { firstName: { $regex: filter, $options: 'i' } },
+                        { lastName: { $regex: filter, $options: 'i' } }
+                    ]
+                },
+                {
+                    _id: { $ne: req.userId } // Exclude current user's username
                 }
-            }, {
-                lastName: {
-                    $regex: filter,
-                    $options: 'i'
-                }
-            }]
-        }) 
+            ]
+        });
     
         const userArray = filteredUsers.map((user)=>{
             const userx = {
