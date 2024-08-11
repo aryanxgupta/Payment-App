@@ -8,7 +8,7 @@ export function Users(){
     const[filter, setFilter] = useState("")
     const navigate = useNavigate()    
     useEffect(()=>{
-        axios.get('http://localhost:3000/api/v1/user/bulk?filter='+ filter,{
+        axios.get('https://payment-app-1-p5m1.onrender.com/api/v1/user/bulk?filter='+ filter,{
             headers:{
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }

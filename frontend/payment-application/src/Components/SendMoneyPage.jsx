@@ -46,7 +46,7 @@ export function SendMoneyPage(){
                 }}/>
                 <Button label="Send" onClick={async()=>{
                     try{
-                        const response = await axios.post('http://localhost:3000/api/v1/account/transfer',{
+                        const response = await axios.post('https://payment-app-1-p5m1.onrender.com/api/v1/account/transfer',{
                             to: id, 
                             amount: amount
                         }, {
