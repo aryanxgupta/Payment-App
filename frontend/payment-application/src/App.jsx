@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, , HashRouterNavigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Signup } from './Pages/Signup'
 import { Signin } from './Pages/Signin'
 import { Dashboard } from './Pages/Dashboard'
