@@ -6,8 +6,11 @@ import { InputBox } from './InputBox'
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { ErrorWarning } from './ErrorWarning'
 
 export function SignupPage(){
+    const [errMsg, setErrMsg] = useState("")
+    const [error, setError] = useState(false)
     const[firstName, setFirstName] = useState("")
     const[lastName, setLastName] = useState("")
     const[username, setUsername] = useState("")
@@ -31,18 +34,28 @@ export function SignupPage(){
                     setPassword(e.target.value)
                 }} />
                 <Button label="Sign up" onClick={async()=>{
-                    const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-                        firstName,
-                        lastName, 
-                        username, 
-                        password 
-                    })
-                    localStorage.setItem('token', response.data.token)
-                    navigate('/dashboard')
-
+                    try{
+                        const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
+                            firstName,
+                            lastName, 
+                            username, 
+                            password 
+                        })
+                        console.log(response);
+                        
+                        localStorage.setItem('token', response.data.token)
+                        navigate('/dashboard')
+                    }catch(err){
+                        setError(true)
+                        setErrMsg(err.response.data.message)
+                        setTimeout(()=> setError(false), 2000)
+                    }
                 }} />
                 <BottomWarning label="Already a customer" text="Sign in" to="/signin" />
             </div>
+            {error && <div className='absolute top-0 left-1/2 translate-x-[-50%]'>
+                <ErrorWarning message={errMsg} />
+            </div>}
         </div>
     )
 }
