@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, , HashRouterNavigate } from 'react-router-dom'
 import { Signup } from './Pages/Signup'
 import { Signin } from './Pages/Signin'
 import { Dashboard } from './Pages/Dashboard'
@@ -7,7 +7,7 @@ import { Dashboard } from './Pages/Dashboard'
 function App() {
   return (
     <div>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/signin' element={<Signin />} />
@@ -15,7 +15,7 @@ function App() {
           <Route path="/" element={<Navigate to="/signin" />} />
           <Route path="*" element={<Navigate to="/signin" />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   )
 }
