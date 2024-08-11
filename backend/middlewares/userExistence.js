@@ -24,13 +24,16 @@ async function notExistingUserMiddleware(req, res, next){
     try{
         const { username, password } = req.body 
         const response = await User.findOne({
-            username, 
-            password
+            username
         })
         if(!response){
             return res.status(400).json({
-                message: "User not existence mw error."
+                message: "User does not exists."
             })
+        }else if(response.password != password){
+            return res.status(400).json({
+                message: "Wrong password"
+            })            
         }
         req.user = username, 
         req.userId = response._id
